@@ -5,14 +5,14 @@ import TodoTask from './Components/TodoTask';
 
 const App:FC=() =>{
   const [task, setTask]=useState<string>("");
-  const [deadline, setDeadline]=useState<number>(0);
+  const [deadline, setDeadline]=useState<string>("");
   const [todoList, setTodoList]=useState<ITask[]>([]);
   
   const handleChange = (event:ChangeEvent<HTMLInputElement>): void =>{
    if(event.target.name==="task"){
         setTask(event.target.value)
    }else{
-    setDeadline(Number(event.target.value));
+    setDeadline(event.target.value);
    }
   }
   
@@ -20,7 +20,7 @@ const App:FC=() =>{
     const newTask={taskName:task,deadline:deadline};
     setTodoList([...todoList,newTask]);
     setTask("");
-    setDeadline(0);
+    setDeadline("");
   }
   
   const completeTask = (taskNameToDelete:string):void=>{
@@ -39,7 +39,8 @@ const App:FC=() =>{
           name='task' 
           value={task}
           onChange={handleChange}/>
-          <input type="number" 
+          <input 
+          type="date"
           placeholder='Deadline' 
           name="deadline"
           value={deadline}

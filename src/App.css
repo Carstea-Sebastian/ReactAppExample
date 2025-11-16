@@ -60,6 +60,11 @@ body {
   background: white;
   color: #667eea;
   font-weight: 600;
+  transition: opacity 0.3s;
+}
+
+.header button:hover {
+  opacity: 0.8;
 }
 
 .todoList {
@@ -93,10 +98,13 @@ body {
   height: 100%;
   font-size: 18px;
   background: white;
-  border: none;
-  border-right: none;
+  border-right: 1px solid #e0e0e0;
   color: #667eea;
   font-weight: 600;
+}
+
+.task .content span:last-child {
+  border-right: none;
 }
 
 .task button {
@@ -107,4 +115,9 @@ body {
   background: #f5576c;
   color: white;
   cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.task button:hover {
+  opacity: 0.8;
 }
