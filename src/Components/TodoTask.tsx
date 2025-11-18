@@ -1,45 +1,47 @@
 import React, { FC } from 'react';
-import { ITask } from '../Interfaces';
+import { TodoTaskProps } from '../Interfaces';
 
-interface Props {
-  task: ITask;
-  deleteTask: (id: string) => void;
-  toggleComplete: (id: string) => void;
-}
-
-const TodoTask: FC<Props> = ({ task, deleteTask, toggleComplete }) => {
+const TodoTask: FC<TodoTaskProps> = ({ task, eliminaTask, reverseComplet }) => {
   return (
     <div 
       style={{
         display: 'flex',
         alignItems: 'center',
         padding: '15px',
-        backgroundColor: task.completed ? '#f0f0f0' : 'white',
-        border: '1px solid #ddd',
+        backgroundColor: task.completed ? '#e6ffe6' : 'white', 
+        border: `1px solid ${task.completed ? '#4CAF50' : '#ddd'}`,
         borderRadius: '5px',
-        gap: '10px'
+        gap: '10px',
+        opacity: task.completed ? 0.7 : 1,
+        transition: 'all 0.3s'
       }}
     >
       <input
         type="checkbox"
-        checked={task.completed}
-        onChange={() => toggleComplete(task.id)}
+        checked={task.completed} 
+        onChange={() => reverseComplet(task.id)} 
         style={{ width: '20px', height: '20px', cursor: 'pointer' }}
       />
+      
       <div style={{ flex: 1 }}>
-        <div style={{ 
-          textDecoration: task.completed ? 'line-through' : 'none',
-          color: task.completed ? '#888' : '#333',
-          fontWeight: '500'
-        }}>
+
+        <div 
+          style={{ 
+            fontWeight: '500',
+            textDecoration: task.completed ? 'line-through' : 'none',
+            color: task.completed ? '#888' : '#333'
+          }}
+        >
           {task.taskName}
         </div>
+        
         <div style={{ fontSize: '12px', color: '#666', marginTop: '5px' }}>
-          {task.deadline}
+          Termen: {task.deadline}
         </div>
       </div>
+      
       <button
-        onClick={() => deleteTask(task.id)}
+        onClick={() => eliminaTask(task.id)}
         style={{
           padding: '8px 15px',
           backgroundColor: '#f44336',

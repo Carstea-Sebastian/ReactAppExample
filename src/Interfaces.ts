@@ -1,12 +1,12 @@
-export interface ITask {
-  id: string;
+export interface Task {
+  id: string;        
   taskName: string;
   deadline: string;
   completed: boolean;
 }
 
 export interface TodoTaskProps {
-  task: ITask;
-  deleteTask: (id: string) => void;
-  toggleComplete: (id: string) => void;
+  task: Task;
+  eliminaTask: (id: string) => void;
+  reverseComplet: (id: string) => void; 
 }
