@@ -9,7 +9,7 @@ const TodoTask: FC<TodoTaskProps> = ({ task, eliminaTask, reverseComplet }) => {
         alignItems: 'center',
         padding: '15px',
         backgroundColor: task.completed ? '#e6ffe6' : 'white', 
-        border: `1px solid ${task.completed ? '#4CAF50' : '#ddd'}`,
+        border: `1px solid ${task.completed ? '#4CAF50' : '#dfddddff'}`,
         borderRadius: '5px',
         gap: '10px',
         opacity: task.completed ? 0.7 : 1,
@@ -29,13 +29,13 @@ const TodoTask: FC<TodoTaskProps> = ({ task, eliminaTask, reverseComplet }) => {
           style={{ 
             fontWeight: '500',
             textDecoration: task.completed ? 'line-through' : 'none',
-            color: task.completed ? '#888' : '#333'
+            color: task.completed ? '#898888ff' : '#353535ff'
           }}
         >
           {task.taskName}
         </div>
         
-        <div style={{ fontSize: '12px', color: '#666', marginTop: '5px' }}>
+        <div style={{ fontSize: '12px', color: '#6a6969ff', marginTop: '5px' }}>
           Termen: {task.deadline}
         </div>
       </div>

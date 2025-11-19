@@ -49,7 +49,7 @@ body {
   font-size: 32px;
 }
 
-.inputContainer {
+.input {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -91,4 +91,14 @@ body {
   padding: 40px;
   text-align: center;
   color: #666;
+}
+.container{
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
