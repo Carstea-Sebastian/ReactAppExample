@@ -1,12 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import './App.css';
-import { Task } from './Interfaces'; 
+import { Task } from './Interfaces';
 import TodoTask from './Components/TodoTask';
 
+const LOCAL_STORAGE_KEY = "react-task-manager-data";
+
 const App = () => {
+
+  const iaDinStorage = (): Task[] => {
+    const storedData = localStorage.getItem(LOCAL_STORAGE_KEY);
+    return storedData ? JSON.parse(storedData) : [];
+  }
+
   const [task, setTask] = useState("");
   const [dataLimita, setDataLimita] = useState("");
-  const [vector, setVector] = useState<Task[]>([]);
+  const [vector, setVector] = useState<Task[]>(iaDinStorage);
+  const [filtruStare, setFiltruStare] = useState<"toate" | "activ" | "terminat">("toate");
+  
+  useEffect(() => {
+    try {
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(vector));
+      console.log("Date salvate in localStorage.")
+    } catch (error) {
+      console.error("Eroare la salvare in storage.");
+    }
+  }, [vector]);
+
+  const SortareTask = useMemo(() => {
+    let Prelucrat = vector.filter(task => {
+      if (filtruStare === "activ") {
+        return !task.completed;
+      }
+      if (filtruStare === "terminat") {
+        return task.completed;
+      }
+      return true;
+    });
+    
+    return Prelucrat;
+  }, [vector, filtruStare]);
 
   const adaugaTask = () => {
     if (task.trim() && dataLimita) {
@@ -14,7 +46,7 @@ const App = () => {
         id: Date.now().toString(),
         taskName: task.trim(),
         deadline: dataLimita,
-        completed: false, 
+        completed: false,
       };
 
       setVector([...vector, newTask]);
@@ -27,53 +59,66 @@ const App = () => {
   const eliminaTask = (id: string) => {
     setVector(vector.filter(t => t.id !== id));
   };
-  
+
   const reverseComplet = (id: string) => {
-    setVector(vector.map(t => 
-      t.id === id 
-        ? { ...t, completed: !t.completed } : t 
-    ));
+    setVector(vector.map(t => t.id === id ? { ...t, completed: !t.completed } : t ));
   };
-  
-  return(
+
+  return (
     <div className='App'>
       <div className='header'>
         <h1 className="title">Task Manager</h1>
-        <div className='inputContainer'> 
-          <input 
-            type="text" 
-            placeholder='Nume task' 
-            value={task} 
-            onChange={(e) => setTask(e.target.value)} 
+        <div className='input'>
+          <input
+            type="text"
+            placeholder='Nume task'
+            value={task}
+            onChange={(e) => setTask(e.target.value)}
             className='input-task'
           />
-          <input 
-            type="date" 
-            value={dataLimita} 
-            onChange={(e) => setDataLimita(e.target.value)} 
+          <input
+            type="date"
+            value={dataLimita}
+            onChange={(e) => setDataLimita(e.target.value)}
             className='input-date'
           />
           <button onClick={adaugaTask} className='btn-add'>
             Adauga task
           </button>
         </div>
+
+        <div className='container'>
+          <div className='filtru'>
+            <label>Filtru stare task:</label>
+            <select
+              value={filtruStare}
+              onChange={(e) => setFiltruStare(e.target.value as "toate" | "activ" | "terminat")}
+            >
+              <option value="toate">Toate</option>
+              <option value="activ">Active</option>
+              <option value="terminat">Terminate</option>
+            </select>
+          </div>
+
+          
+        </div>
       </div>
-      
+
       <div className='todoList'>
-        {vector.length === 0 ? (
+        {SortareTask.length === 0 ? (
           <div className='empty-state'>
-            <p>Nici un task momentan. Adauga unul pentru a incepe!</p>
+            <p>Nici un task momentan. Daca ai introdus task-uri, verifica filtrele!</p>
           </div>
         ) : (
-          vector.map((taskItem) => (
-            <TodoTask 
-              key={taskItem.id} 
+          SortareTask.map((taskItem) => (
+            <TodoTask
+              key={taskItem.id}
               task={taskItem}
               eliminaTask={eliminaTask}
-              reverseComplet={reverseComplet} 
+              reverseComplet={reverseComplet}
             />
           ))
-        )} 
+        )}
       </div>
     </div>
   );
